@@ -11,8 +11,8 @@ public enum ANSIColor: Int, CaseIterable {
     case white = 7
 }
 
-// MARK: - ColorFunc extensions
-public extension ColorFunc {
+// MARK: - Decorate extensions
+public extension Decorate {
     static var black: Self { .init(textColor: .black) }
     static var red: Self { .init(textColor: .red) }
     static var green: Self { .init(textColor: .green) }
@@ -23,7 +23,7 @@ public extension ColorFunc {
     static var white: Self { .init(textColor: .white) }
 }
 
-public extension ColorFunc {
+public extension Decorate {
     static var backgroundBlack: Self { .init(backgroundColor: .black) }
     static var backgroundRed: Self { .init(backgroundColor: .red) }
     static var backgroundGreen: Self { .init(backgroundColor: .green) }
@@ -34,7 +34,7 @@ public extension ColorFunc {
     static var backgroundWhite: Self { .init(backgroundColor: .white) }
 }
 
-public extension ColorFunc {
+public extension Decorate {
     var backgroundBlack: Self { mutating(\.backgroundColor, .black) }
     var backgroundRed: Self { mutating(\.backgroundColor, .red) }
     var backgroundGreen: Self { mutating(\.backgroundColor, .green) }

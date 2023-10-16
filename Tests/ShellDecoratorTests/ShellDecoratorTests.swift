@@ -3,7 +3,7 @@ import XCTest
 
 final class ColorFuncTests: XCTestCase {
     func testBuild() throws {
-        let pattern: [(ColorFunc, String, StaticString, UInt)] = [
+        let pattern: [(Decorate, String, StaticString, UInt)] = [
             (.default, "\u{001B}[m", #file, #line),
             (.red, "\u{001B}[31m", #file, #line),
             (.green.backgroundYellow, "\u{001B}[32;43m", #file, #line),

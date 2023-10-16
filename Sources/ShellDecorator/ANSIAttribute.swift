@@ -15,8 +15,8 @@ public enum ANSIAttribute: Int, CaseIterable {
     case invisibleText = 8
 }
 
-// MARK: - ColorFunc extensions
-public extension ColorFunc {
+// MARK: - Decorate extensions
+public extension Decorate {
     /// 太字
     var bold: Self { appending(attribute: .bold) }
     /// 弱強調

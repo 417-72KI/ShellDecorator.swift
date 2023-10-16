@@ -1,16 +1,16 @@
 import Foundation
 
-public struct ColorFunc {
+public struct Decorate {
     var textColor: ANSIColor?
     var backgroundColor: ANSIColor?
     var attributes: [ANSIAttribute] = []
 }
 
-extension ColorFunc {
+extension Decorate {
     static var `default`: Self { .init() }
 }
 
-extension ColorFunc {
+extension Decorate {
     func build() -> String {
         var string = "\u{001B}["
         if let textColorString {
@@ -40,13 +40,13 @@ extension ColorFunc {
     }
 }
 
-public extension ColorFunc {
+public extension Decorate {
     func callAsFunction(_ string: String) -> String {
         build() + string + reset()
     }
 }
 
-private extension ColorFunc {
+private extension Decorate {
     var textColorString: String? {
         textColor
             .map(\.rawValue)
@@ -67,7 +67,7 @@ private extension ColorFunc {
     }
 }
 
-extension ColorFunc {
+extension Decorate {
     mutating func mutate(_ keyPath: WritableKeyPath<Self, ANSIColor?>,
                          _ value: ANSIColor?) {
         self[keyPath: keyPath] = value
