@@ -11,28 +11,15 @@ extension Decorate {
 }
 
 extension Decorate {
+    @String.Builder
     func build() -> String {
-        var string = "\u{001B}["
-        if let textColorString {
-            if string.last != "[" {
-                string += ";"
-            }
-            string += textColorString
-        }
-        if let backgroundColorString {
-            if string.last != "[" {
-                string += ";"
-            }
-            string += backgroundColorString
-        }
-        let attributes = attributesString
-        if !attributes.isEmpty {
-            if string.last != "[" {
-                string += ";"
-            }
-            string += attributes
-        }
-        return string + "m"
+        "\u{001B}["
+        [textColorString, backgroundColorString, attributesString]
+            .lazy
+            .compactMap { $0 }
+            .filter(\.isNotEmpty)
+            .joined(separator: ";")
+        "m"
     }
 
     func reset() -> String {
@@ -61,6 +48,7 @@ private extension Decorate {
     }
     var attributesString: String {
         attributes
+            .lazy
             .map(\.rawValue)
             .map(String.init)
             .joined(separator: ";")
