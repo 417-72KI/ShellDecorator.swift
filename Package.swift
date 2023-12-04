@@ -4,12 +4,28 @@
 import PackageDescription
 
 let isRelease = false
-let devDependencies: [Package.Dependency] = isRelease ? [] : [
-    .package(url: "https://github.com/realm/SwiftLint", exact: "0.54.0"),
-]
-let devPlugins: [Target.PluginUsage] = isRelease ? [] : [
-    .plugin(name: "SwiftLintPlugin", package: "SwiftLint"),
-]
+let devDependencies: [Package.Dependency] = if isRelease {
+    []
+} else {
+    #if os(macOS)
+    [
+        .package(url: "https://github.com/realm/SwiftLint", exact: "0.54.0"),
+    ]
+    #else
+    []
+    #endif
+}
+let devPlugins: [Target.PluginUsage] = if isRelease {
+    []
+} else {
+    #if os(macOS)
+    [
+        .plugin(name: "SwiftLintPlugin", package: "SwiftLint"),
+    ]
+    #else
+    []
+    #endif
+}
 
 let package = Package(
     name: "ShellDecorator",
