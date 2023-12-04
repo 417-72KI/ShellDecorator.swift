@@ -43,8 +43,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/cache@v3
         with:
-          path: |
-            .build/SourcePackages/checkouts
+          path: .build
           key: ${{ runner.os }}-xcode-${{ matrix.xcode }}-${{ hashFiles('Package.swift') }}
           restore-keys: |
             ${{ runner.os }}-xcode-${{ matrix.xcode }}-
@@ -66,8 +65,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/cache@v3
         with:
-          path: |
-            .build/SourcePackages/checkouts
+          path: .build
           key: ${{ runner.os }}-xcode-${{ matrix.swift }}-${{ hashFiles('Package.swift') }}
           restore-keys: |
             ${{ runner.os }}-xcode-${{ matrix.swift }}-
