@@ -1,0 +1,28 @@
+included:
+  - Sources
+excluded:
+  - Tests
+opt_in_rules: [all]
+disabled_rules:
+  - explicit_acl
+  - explicit_type_interface
+  - indentation_width
+  - multiline_parameters_brackets
+  - no_extension_access_modifier
+  - no_grouping_extension
+  - sorted_enum_cases
+  - switch_case_on_newline
+line_length:
+  warning: 180
+  ignores_urls: true
+  ignores_function_declarations: true
+  ignores_comments: true
+  ignores_interpolated_strings: true
+file_length:
+  ignore_comment_only_lines: true
+cyclomatic_complexity:
+  ignores_case_statements: true
+number_separator:
+  minimum_length: 5
+trailing_closure:
+  only_single_muted_parameter: true

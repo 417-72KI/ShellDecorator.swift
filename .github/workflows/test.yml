@@ -1,0 +1,75 @@
+name: Test
+on: 
+  pull_request:
+    types: [opened, synchronize, edited]
+    paths:
+      - .github/workflows/test.yml
+      - Package.*
+      - Sources/**/*.swift
+      - Tests/**/*.swift
+      - .github/matrix.json
+concurrency: 
+  group: ${{ github.ref }}-${{ github.workflow }}
+  cancel-in-progress: true
+jobs:
+  extract-matrix:
+    name: Extract latest Xcode version from matrix
+    runs-on: ubuntu-latest
+    outputs:
+      xcode-versions: ${{ steps.extract-matrix.outputs.xcode-versions }}
+      latest: ${{ steps.extract-matrix.outputs.latest-xcode-version }}
+      swift-versions: ${{ steps.extract-matrix.outputs.swift-versions }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: extract-matrix
+        run: |
+          echo "xcode-versions=$(cat .github/matrix.json | jq -rc '.xcode_version')" >> $GITHUB_OUTPUT
+          echo "latest-xcode-version=$(cat .github/matrix.json | jq -r '.xcode_version | max')" >> $GITHUB_OUTPUT
+          echo "swift-versions=$(cat .github/matrix.json | jq -rc '.swift_version')" >> $GITHUB_OUTPUT
+  test-macos:
+    name: Test
+    needs: extract-matrix
+    runs-on: macos-13
+    concurrency: 
+      group: ${{ github.head_ref }}-${{ github.workflow }}-${{ matrix.xcode }}
+      cancel-in-progress: true
+    strategy:
+      matrix:
+        xcode: ${{ fromJson(needs.extract-matrix.outputs.xcode-versions) }}
+      fail-fast: false
+    env:
+      DEVELOPER_DIR: /Applications/Xcode_${{ matrix.xcode }}.app/Contents/Developer
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/cache@v3
+        with:
+          path: |
+            .build/SourcePackages/checkouts
+          key: ${{ runner.os }}-xcode-${{ matrix.xcode }}-${{ hashFiles('Package.swift') }}
+          restore-keys: |
+            ${{ runner.os }}-xcode-${{ matrix.xcode }}-
+      - name: test
+        run: swift test
+  test-linux:
+    name: Test
+    needs: extract-matrix
+    runs-on: ubuntu-latest
+    container: swift:${{ matrix.swift }}
+    concurrency: 
+      group: ${{ github.head_ref }}-${{ github.workflow }}-${{ matrix.swift }}
+      cancel-in-progress: true
+    strategy:
+      matrix:
+        swift: ${{ fromJson(needs.extract-matrix.outputs.swift-versions) }}
+      fail-fast: false
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/cache@v3
+        with:
+          path: |
+            .build/SourcePackages/checkouts
+          key: ${{ runner.os }}-xcode-${{ matrix.swift }}-${{ hashFiles('Package.swift') }}
+          restore-keys: |
+            ${{ runner.os }}-xcode-${{ matrix.swift }}-
+      - name: test
+        run: swift test

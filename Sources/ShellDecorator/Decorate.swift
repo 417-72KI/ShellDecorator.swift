@@ -37,13 +37,13 @@ private extension Decorate {
     var textColorString: String? {
         textColor
             .map(\.rawValue)
-            .map { 30 + $0 }
+            .map { 30 + $0 } // swiftlint:disable:this no_magic_numbers
             .map(String.init)
     }
     var backgroundColorString: String? {
         backgroundColor
             .map(\.rawValue)
-            .map { 40 + $0 }
+            .map { 40 + $0 } // swiftlint:disable:this no_magic_numbers
             .map(String.init)
     }
     var attributesString: String {
