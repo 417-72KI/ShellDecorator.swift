@@ -20,7 +20,7 @@ jobs:
       latest: ${{ steps.extract-matrix.outputs.latest-xcode-version }}
       swift-versions: ${{ steps.extract-matrix.outputs.swift-versions }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
       - id: extract-matrix
         run: |
           echo "xcode-versions=$(cat .github/matrix.json | jq -rc '.xcode_version')" >> $GITHUB_OUTPUT
@@ -40,8 +40,8 @@ jobs:
     env:
       DEVELOPER_DIR: /Applications/Xcode_${{ matrix.xcode }}.app/Contents/Developer
     steps:
-      - uses: actions/checkout@v6
-      - uses: actions/cache@v5
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+      - uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5
         with:
           path: |
             .build/SourcePackages/checkouts
@@ -63,8 +63,8 @@ jobs:
         swift: ${{ fromJson(needs.extract-matrix.outputs.swift-versions) }}
       fail-fast: false
     steps:
-      - uses: actions/checkout@v6
-      - uses: actions/cache@v5
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+      - uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5
         with:
           path: |
             .build/SourcePackages/checkouts
